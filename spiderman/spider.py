@@ -35,9 +35,9 @@ def douban_movie_spider():
 
     return movies
 
-for movie in douban_movie_spider():
-    print(movie)
-    print("-" * 50)
+# for movie in douban_movie_spider():
+#     print(movie)
+#     print("-" * 50)
 def save_csv(movies):
     with open("movies.csv","w",newline="") as csvfile:
         writer = csv.writer(csvfile)
