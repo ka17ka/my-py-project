@@ -38,18 +38,18 @@ def douban_movie_spider():
 for movie in douban_movie_spider():
     print(movie)
     print("-" * 50)
-# def save_csv(movies):
-#     with open("movies.csv","w",newline="") as csvfile:
-#         writer = csv.writer(csvfile)
-#         writer.writerow(["电影名称","评分","链接"])
-#
-#         for movie in movies:
-#             writer.writerow([movie["name"],movie["rating_num"],movie["link"]])
-#
-#
-# def main():
-#     movies = douban_movie_spider()
-#     save_csv(movies)
+def save_csv(movies):
+    with open("movies.csv","w",newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["电影名称","评分","链接"])
+
+        for movie in movies:
+            writer.writerow([movie["name"],movie["rating_num"],movie["link"]])
+
+
+def main():
+    movies = douban_movie_spider()
+    save_csv(movies)
 #
 # if __name__ == "__main__":
 #     main()
