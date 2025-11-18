@@ -50,9 +50,9 @@ def save_csv(movies):
 def main():
     movies = douban_movie_spider()
     save_csv(movies)
-#
-# if __name__ == "__main__":
-#     main()
+
+if __name__ == "__main__":
+    main()
 
 
 
