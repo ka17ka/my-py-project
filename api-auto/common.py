@@ -7,14 +7,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def get_config():
+def get_config(env="fat"):
     config = configparser.ConfigParser()
     config.read('config.ini')
-    base_url = config.get('base', 'base_url')
-    authorization = config.get('user', 'authorization')
-    sign = config.get('user', 'sign')
-    gxsaas_auth = config.get('user', 'gxsaas-auth')
-    atimestamp = config.get('user', 'atimestamp')
+    base_url = config.get(env, 'base_url')
+    authorization = config.get(env, 'authorization')
+    sign = config.get(env, 'sign')
+    gxsaas_auth = config.get(env, 'gxsaas-auth')
+    atimestamp = config.get(env, 'atimestamp')
 
     return base_url, authorization, sign, gxsaas_auth, atimestamp
 
@@ -24,8 +24,8 @@ def get_test_data():
         return test_data
 # print(get_test_data()["add_distribution_cases"]["request"]["url"])
 
-def req_api(case_data,**kwargs):
-    base_url, authorization, sign, gxsaas_auth, atimestamp = get_config()
+def req_api(case_data,env="fat",**kwargs):
+    base_url, authorization, sign, gxsaas_auth, atimestamp = get_config(env)
     # test_data = get_test_data()
     test_req = case_data["request"]
 
