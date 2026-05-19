@@ -2,3 +2,4 @@ pytest
 requests
 PyYAML
 allure-pytest 
+cryptography

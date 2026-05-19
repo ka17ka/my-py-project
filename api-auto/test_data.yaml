@@ -1,3 +1,27 @@
+get_captcha:
+  name: "获取key值加密"
+  request:
+    url: "/api/gxsaas-auth/captcha"
+    method: "GET"
+    param:
+  expect:
+    code: 200
+
+get_login_token:
+  name: "登录"
+  request:
+    url: "/api/gxsaas-auth/token"
+    method: "POST"
+    data:
+      account: ls1234
+      password: ${password}
+      grantType: password
+      validKey: ${validKey}
+      validCode: ${validCode}
+      vertifyIsShow: false
+  expect:
+    code: 200
+
 add_distribution_cases:
   - name: "添加配电设施成功"
     request:
@@ -809,15 +833,26 @@ remove_lampbase_with_control_cases:
       data:
         name: '1224有单灯灯具'
 
-check_special_hardware_cases:
+check_special_hardware_byname_cases:
   name: "查看测试专用天宇1715回路监控箱成功"
   request:
     url: "/api/gxsaas-assets/hardware/listPage"
     method: "GET"
     param:
       name: "天宇"
+  expect:
+    code: 200
+    data:
+      name: ''
+      id: '1988432576442728449'
+
+check_special_hardware_bycode_cases:
+  name: "查看测试专用天宇1715回路监控箱成功"
+  request:
+    url: "/api/gxsaas-assets/hardware/listPage"
+    method: "GET"
+    param:
       code: 1715
-    data: ""
   expect:
     code: 200
     data:
@@ -825,45 +860,46 @@ check_special_hardware_cases:
       id: '1988432576442728449'
 
 hardware_fully_open_cases:
-  name: "验证回路监控箱全开功能"
-  request:
-    url: "/api/gxsaas-monitor/hardware/runMap/excuteCommand"
-    method: "POST"
-    data:
-      deviceId: '{$deviceId}'
-      deviceOperFunc: 21
-      commandId: D02017
-      params:
-        controlType: 1
-        commandPfc: ''
-  expect:
-    code: 200
-    data:
-      name: ''
+  - name: "全开回路监控箱"
+    request:
+      url: "/api/gxsaas-monitor/hardware/runMap/excuteCommand"
+      method: "POST"
+      data:
+        deviceId: '{$deviceId}'
+        deviceOperFunc: 21
+        commandId: D02017
+        params:
+          controlType: 1
+          commandPfc: ''
+    expect:
+      code: 200
+      data:
+        name: ''
 
 hardware_fully_closed_cases:
-  name: "验证回路监控箱全关功能"
-  request:
-    url: "/api/gxsaas-monitor/hardware/runMap/excuteCommand"
-    method: "POST"
-    data:
-      deviceId: '1988432576442728449'
-      deviceOperFunc: 21
-      commandId: D02017
-      params:
-        controlType: 0
-        commandPfc: ''
-  expect:
-    code: 200
-    data:
-      name: ''
+  - name: "全关回路监控箱"
+    request:
+      url: "/api/gxsaas-monitor/hardware/runMap/excuteCommand"
+      method: "POST"
+      data:
+        deviceId: '{$deviceId}'
+        deviceOperFunc: 21
+        commandId: D02017
+        params:
+          controlType: 0
+          commandPfc: ''
+    expect:
+      code: 200
+      data:
+        name: ''
 
 wait_for_hardware_ready_cases:
   name: "轮询检查天宇监控箱状态"
   request:
     url: "/api/gxsaas-monitor/hardware/runMap/getRunData"
     method: "GET"
-    data:
+    param:
+      id: "${hardware_id}"
   expect:
     code: 200
     data:
@@ -881,30 +917,51 @@ check_special_lamppost_cases:
     method: "GET"
     param:
       name: "测试1"
-    data: ""
   expect:
     code: 200
     data:
       name: ''
       id: '1968517261443928065'
 
-lampcontrol_open_close_cases:
-  name: "开启单灯控制器单开/单关功能"
-  request:
-    url: "/api/gxsaas-monitor/device/runMap/lampPost/switch"
-    method: "POST"
-    data:
-  expect:
-    code: 200
-    data:
-      name: ''
+lampcontrol_open_cases:
+  - name: "单灯控制器单开"
+    request:
+      url: "/api/gxsaas-monitor/device/runMap/lampPost/switch"
+      method: "POST"
+      param:
+        lampPostId: "${lampPostId}"
+        opr: 1
+        commandPfc: ""
+    expect:
+      code: 200
+      data:
+        name: ''
+
+lampcontrol_close_cases:
+  - name: "单灯控制器单关"
+    request:
+      url: "/api/gxsaas-monitor/device/runMap/lampPost/switch"
+      method: "POST"
+      param:
+        lampPostId: "${lampPostId}"
+        opr: 0
+        commandPfc: ""
+    expect:
+      code: 200
+      data:
+        name: ''
 
 check_lampbase_switchstatus_cases:
   name: "检查灯杆运行数据中开关灯状态"
   request:
     url: "/api/gxsaas-monitor/device/lampWorkinfo/listPage"
     method: "GET"
-    data:
+    param:
+      current: 1
+      size: 15
+      lampPostId: "${lampPostId}"
+      beginTime: "${beginTime}"
+      endTime: "${endTime}"
   expect:
     code: 200
     data:
@@ -913,32 +970,35 @@ check_lampbase_switchstatus_cases:
       close_switchstatus: "0"
 
 lampcontrol_dimming_cases:
-  name: "验证单灯控制器调光功能"
-  request:
-    url: "/api/gxsaas-monitor/device/runMap/lampPost/lampPostBitwise"
-    method: "POST"
-    data:
-      deviceId: '1988432576442728449'
-      deviceOperFunc: 21
-      commandId: D02017
-      params:
-        controlType: 1
-        commandPfc: ''
-  expect:
-    code: 200
-    data:
-      name: ''
+  - name: "验证单灯控制器调光功能"
+    request:
+      url: "/api/gxsaas-monitor/device/runMap/lampPost/lampPostBitwise"
+      method: "POST"
+      param:
+        lampPostId: "${lampPostId}"
+        mainDim: 30
+        sideDim: 30
+        commandPfc: ""
+    expect:
+      code: 200
+      data:
+        name: ''
 
 check_lampbase_dimmingLevel_cases:
   name: "检查灯杆运行数据中调光状态"
   request:
     url: "/api/gxsaas-monitor/device/lampWorkinfo/listPage"
     method: "GET"
-    data:
+    param:
+      current: 1
+      size: 15
+      lampPostId: "${lampPostId}"
+      beginTime: "${beginTime}"
+      endTime: "${endTime}"
   expect:
     code: 200
     data:
       name: ''
-      main_dimmingLevel: "50"
-      side_dimmingLevel: "50"
+      main_dimmingLevel: "30"
+      side_dimmingLevel: "30"
 
