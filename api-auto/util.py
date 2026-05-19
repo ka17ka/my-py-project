@@ -94,12 +94,12 @@ def get_cached_token():
     """
     token, expires_at = read_cached_token()
     current_time = time.time()
-    logger.info(f"🔍 当前缓存状态: _cached_token={token}, _token_expires_at={expires_at}")
+    logger.info(f"当前缓存状态: _cached_token={token}, _token_expires_at={expires_at}")
     if token and current_time < expires_at:
-        logger.info("♻️ 使用缓存 token，未重新登录")
+        logger.info("使用缓存 token，未重新登录")
         return token
 
-    logger.info("🚀 调用 login_api() 获取新 token")
+    logger.info("调用 login_api() 获取新 token")
     access_token = login_api()
     token = access_token
     expires_at = current_time + 360000
