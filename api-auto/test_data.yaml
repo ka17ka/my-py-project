@@ -398,7 +398,6 @@ add_lampcontrol_cases:
         lampPostName: '${lampPostName}'
         streetId: '1902311440011984898'
         workAreaId: '1815278623369572353'
-        name: 1224单灯控制器
         districtCode: '420504'
         district: 点军区
         code: dd1224
@@ -412,7 +411,7 @@ add_lampcontrol_cases:
     expect:
       code: 200
       data:
-        name: '1224单灯控制器'
+        name: '1224灯杆-单灯'
 
 check_monitor_add_lampcontrol_cases:
   - name: "验证添加单灯控制器是否已同步监控"
@@ -424,7 +423,7 @@ check_monitor_add_lampcontrol_cases:
     expect:
       code: 200
       data:
-        name: '1224单灯控制器'
+        name: '1224灯杆-单灯'
         isDeliver: 1
 
 update_lampcontrol_cases:
@@ -494,7 +493,7 @@ update_lampcontrol_cases:
     expect:
       code: 200
       data:
-        name: '1224单灯控制器'
+        name: '1224灯杆-单灯'
 
 check_lampcontrol_cases:
   name: "查看单灯控制器成功"
@@ -505,7 +504,7 @@ check_lampcontrol_cases:
   expect:
     code: 200
     data:
-      name: '1224单灯控制器'
+      name: '1224灯杆-单灯'
 
 remove_lampcontrol_cases:
   - name: "删除单灯控制器成功"
@@ -517,7 +516,7 @@ remove_lampcontrol_cases:
     expect:
       code: 200
       data:
-        name: '1224单灯控制器'
+        name: '1224灯杆-单灯'
 
 check_monitor_remove_lampcontrol_cases:
   - name: "验证删除单灯控制器是否已同步监控"
@@ -529,7 +528,7 @@ check_monitor_remove_lampcontrol_cases:
     expect:
       code: 200
       data:
-        name: '1224单灯控制器'
+        name: '1224灯杆-单灯'
 
 add_lampbase_without_control_cases:
   - name: "添加灯具成功-无单灯"
@@ -546,7 +545,7 @@ add_lampbase_without_control_cases:
         streetId: '1902311440011984898'
         workAreaId: '1815278623369572353'
         distributionId: '${distributionId}'
-        name: 1224无单灯灯具
+        name: ''
         districtCode: '420504'
         district: 点军区
         typeId: '1808871335588188162'
@@ -559,36 +558,8 @@ add_lampbase_without_control_cases:
     expect:
       code: 200
       data:
-        name: '1224无单灯灯具'
-  - name: "添加灯具名称重复-无单灯"
-    request:
-      url: "/api/gxsaas-assets/lampbase/add"
-      method: "POST"
-      data:
-        isDeliver: 1
-        line: A
-        position: 1
-        imageUrl: ''
-        lampPostId: '${lampPostId}'
-        lampPostName: '${lampPostName}'
-        streetId: '1902311440011984898'
-        workAreaId: '1815278623369572353'
-        distributionId: '${distributionId}'
-        name: 1224无单灯灯具
-        districtCode: '420504'
-        district: 点军区
-        typeId: '1808871335588188162'
-        power: 100
-        lon: '111.24911'
-        lat: '30.700159'
-        address: 湖北省宜昌市点军区点军街道江城大道辅路
-        height: 0
-        validity: 0
-    expect:
-      code: 800001
-      data:
-        name: '1224无单灯灯具'
-        msg: '名称已存在,请重新输入!'
+        name: '1224灯杆-1灯具'
+
 
 update_lampbase_without_control_cases:
   - name: "修改灯具成功-无单灯"
@@ -655,7 +626,7 @@ update_lampbase_without_control_cases:
     expect:
       code: 200
       data:
-        name: '1224无单灯灯具'
+        name: '1224灯杆-1灯具'
 
 check_lampbase_without_control_cases:
     name: "查看无单灯灯具成功"
@@ -666,7 +637,7 @@ check_lampbase_without_control_cases:
     expect:
       code: 200
       data:
-        name: '1224无单灯灯具'
+        name: '1224灯杆-1灯具'
 
 remove_lampbase_without_control_cases:
   - name: "删除无单灯灯具成功"
@@ -678,7 +649,7 @@ remove_lampbase_without_control_cases:
     expect:
       code: 200
       data:
-        name: '1224无单灯灯具'
+        name: '1224灯杆-1灯具'
 
 add_lampbase_with_control_cases:
   - name: "添加灯具成功-有单灯"
@@ -695,7 +666,7 @@ add_lampbase_with_control_cases:
         streetId: '1902311440011984898'
         workAreaId: '1815278623369572353'
         distributionId: '${distributionId}'
-        name: 1224有单灯灯具
+        name:
         districtCode: '420504'
         district: 点军区
         typeId: '1808871335588188162'
@@ -710,38 +681,7 @@ add_lampbase_with_control_cases:
     expect:
       code: 200
       data:
-        name: '1224有单灯灯具'
-  - name: "添加灯具名称重复-有单灯"
-    request:
-      url: "/api/gxsaas-assets/lampbase/add"
-      method: "POST"
-      data:
-        isDeliver: 1
-        line: A
-        position: 1
-        imageUrl: ''
-        lampPostId: '${lampPostId}'
-        lampPostName: '${lampPostName}'
-        streetId: '1902311440011984898'
-        workAreaId: '1815278623369572353'
-        distributionId: '${distributionId}'
-        name: 1224有单灯灯具
-        districtCode: '420504'
-        district: 点军区
-        typeId: '1808871335588188162'
-        lampNodeCode: '${lampNodeCode}'
-        lampNodeNum: 1
-        power: 100
-        lon: '111.24911'
-        lat: '30.700159'
-        address: 湖北省宜昌市点军区点军街道江城大道辅路
-        height: 0
-        validity: 0
-    expect:
-      code: 800001
-      data:
-        name: '1224有单灯灯具'
-        msg: '名称已存在,请重新输入!'
+        name: '1224灯杆-2灯具'
 
 update_lampbase_with_control_cases:
   - name: "修改灯具成功-有单灯"
@@ -808,7 +748,7 @@ update_lampbase_with_control_cases:
     expect:
       code: 200
       data:
-        name: '1224有单灯灯具'
+        name: '1224灯杆-2灯具'
 
 check_lampbase_with_control_cases:
     name: "查看有单灯灯具成功"
@@ -819,7 +759,7 @@ check_lampbase_with_control_cases:
     expect:
       code: 200
       data:
-        name: '1224有单灯灯具'
+        name: '1224灯杆-2灯具'
 
 remove_lampbase_with_control_cases:
   - name: "删除有单灯灯具成功"
@@ -831,7 +771,7 @@ remove_lampbase_with_control_cases:
     expect:
       code: 200
       data:
-        name: '1224有单灯灯具'
+        name: '1224灯杆-2灯具'
 
 check_special_hardware_byname_cases:
   name: "查看测试专用天宇1715回路监控箱成功"

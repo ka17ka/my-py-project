@@ -94,7 +94,6 @@ def get_cached_token():
     """
     token, expires_at = read_cached_token()
     current_time = time.time()
-    logger.info(f"当前缓存状态: _cached_token={token}, _token_expires_at={expires_at}")
     if token and current_time < expires_at:
         logger.info("使用缓存 token，未重新登录")
         return token
