@@ -34,6 +34,7 @@ class TestAddAsset:
 
         try:
             response = common.req_api(case_data)
+            time.sleep(2)
             # response = common.reqapi("add_distribution_cases")
             logger.info(f"请求完成，状态码: {response.status_code}")
         except Exception as e:
