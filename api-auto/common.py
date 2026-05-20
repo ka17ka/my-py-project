@@ -25,7 +25,7 @@ def get_test_data():
 def req_api(case_data,**kwargs):
     base_url, authorization, sign, gxsaas_auth, atimestamp = get_config(env="fat")
     gxsaas_auth = f"bearer {util.get_cached_token()}"
-    logger.info(f"gxsaas_auth: {util.get_cached_token}")
+    logger.info(f"gxsaas_auth: {gxsaas_auth}")
     # test_data = get_test_data()
     test_req = case_data["request"]
 
