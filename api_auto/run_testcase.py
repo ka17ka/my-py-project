@@ -14,7 +14,7 @@ if __name__ == "__main__":
         shutil.rmtree("./results")
     pytest.main([
             "-v", "-s", "-rA",
-            # "--alluredir=./results",
+            "--alluredir=./results",
             "--log-cli-level=INFO",
             "--log-format=%(asctime)s | %(levelname)-8s | %(filename)-20s:%(lineno)-3d | %(message)s",
             "--log-date-format= %Y-%m-%d %H:%M:%S",
