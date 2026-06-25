@@ -1,0 +1,944 @@
+get_captcha:
+  name: "获取key值加密"
+  request:
+    url: "/api/gxsaas-auth/captcha"
+    method: "GET"
+    param:
+  expect:
+    code: 200
+
+get_login_token:
+  name: "登录"
+  request:
+    url: "/api/gxsaas-auth/token"
+    method: "POST"
+    data:
+      account: fat-ls
+      password: ${password}
+      grantType: password
+      validKey: ${validKey}
+      validCode: ${validCode}
+      vertifyIsShow: false
+  expect:
+    code: 200
+
+add_distribution_cases:
+  - name: "添加配电设施成功"
+    request:
+      url: "/api/gxsaas-assets/distribution/add"
+      method: "POST"
+      data:
+        isDeliver: 1
+        imageUrl: ''
+        name: '1224勿用'
+        typeId: '1808871335714017281'
+        typeName: "箱变"
+        workAreaId: '1815278623369572353'
+        streetId: '1902311440011984898'
+        loopNum: 2
+        address: "湖北省宜昌市伍家岗区伍家乡临江郡"
+        districtCode: '420503'
+        lon: '111.37804'
+        lat: '30.624462'
+    expect:
+      code: 200
+      data:
+        name: '1224勿用'
+  - name: "添加配电设施失败-名称重复"
+    request:
+      url: "/api/gxsaas-assets/distribution/add"
+      method: "POST"
+      data:
+        isDeliver: 1
+        imageUrl: ''
+        name: '1224勿用'
+        typeId: '1808871335714017281'
+        typeName: "箱变"
+        workAreaId: '1815278623369572353'
+        streetId: '1902311440011984898'
+        loopNum: 2
+        address: "湖北省宜昌市伍家岗区伍家乡临江郡"
+        districtCode: '420503'
+        lon: '111.37804'
+        lat: '30.624462'
+    expect:
+      code: 800001
+      data:
+        name: '1224勿用'
+
+update_distribution_cases:
+  - name: "修改配电设施成功"
+    request:
+      url: "/api/gxsaas-assets/distribution/update"
+      method: "POST"
+      data:
+        isDeliver: 1
+        imageUrl: ''
+        id: '${id}'
+        name: '${name}'
+        typeId: '1808871335714017281'
+        tenKv: null
+        highNo: null
+        capacity: null
+        memo: null
+        workAreaId: '1815278623369572353'
+        streetId: '1902311440011984898'
+        district: null
+        districtCode: '420503'
+        unitDeptId: null
+        electricityCode: null
+        userNo: null
+        loopNum: 2
+        address: 湖北省宜昌市伍家岗区伍家乡临江郡
+        lon: '111.37804'
+        lat: '30.624462'
+    expect:
+      code: 200
+      data:
+        name: '1224勿用'
+
+check_distribution_cases:
+  name: "查看配电设施成功"
+  request:
+    url: "/api/gxsaas-assets/distribution/listPage"
+    method: "GET"
+    param:
+      current: 1
+      size: 15
+  expect:
+    code: 200
+    data:
+      name: '1224勿用'
+
+remove_distribution_cases:
+  - name: "删除配电设施成功"
+    request:
+      url: "/api/gxsaas-assets/distribution/remove"
+      method: "POST"
+      param:
+        ids: "${distribution_id}"
+    expect:
+      code: 200
+      data:
+        name: '1224勿用'
+
+add_hardware_cases:
+  - name: "添加回路监控箱成功"
+    request:
+      url: "/api/gxsaas-assets/hardware/add"
+      method: "POST"
+      data:
+        lat: '30.624462'
+        lon: '111.37804'
+        isDeliver: 1
+        imageUrl: ''
+        assetDistributionLoopList:
+          - loopName: '1'
+            loopType: '1'
+            line: A|B|C
+            currentScale: '1000'
+            leakageScale: '1000'
+        distributionId: '${distributionId}'
+        district: '420503'
+        workAreaId: '1815278623369572353'
+        unitDeptId: ''
+        streetId: '1902311440011984898'
+        name: '1224#监控箱'
+        code: '12121212'
+        modelId: '1455122921890455554'
+        modelName: GXTY-GDZL-Z1300
+        brand: 中移智能监控箱
+        manufacturer: 中移物联网
+        address: 湖北省宜昌市伍家岗区伍家乡临江郡
+        workAreaName: 路灯四队
+    expect:
+      code: 200
+      data:
+        name: '1224#监控箱'
+
+check_monitor_add_hardware_cases:
+  - name: "验证添加回路监控箱是否已同步监控"
+    request:
+      url: "/api/gxsaas-monitor/hardware/listPage"
+      method: "GET"
+      param:
+        "keyWord": "${hardware_id}"
+    expect:
+      code: 200
+      data:
+        name: '1224#监控箱'
+        isDeliver: 1
+
+
+update_hardware_cases:
+  - name: "修改回路监控箱成功"
+    request:
+      url: "/api/gxsaas-assets/hardware/update"
+      method: "POST"
+      data:
+        createUser: '1957244824390721537'
+        createTime: '2026-01-04 10:41:56'
+        updateUser: '1957244824390721537'
+        updateTime: '2026-01-04 10:41:56'
+        isDeleted: 0
+        id: '${id}'
+        name: '${name}'
+        code: '12121212'
+        workAreaId: '1815278623369572353'
+        workAreaName: 路灯四队
+        streetId: '1902311440011984898'
+        streetName: 一中路
+        categoryId: '1557282518486454273'
+        categoryName: 回路监控箱
+        modelId: '1455122921890455554'
+        modelName: GXTY-GDZL-Z1300
+        brand: 中移智能监控箱
+        manufacturer: 中移物联网
+        deliverDate: null
+        validity: null
+        isDeliver: 1
+        imageUrl: ''
+        phase: null
+        tenantId: '633490'
+        lat: '30.624462'
+        lon: '111.37804'
+        province: 湖北省
+        city: 宜昌市
+        district: 伍家岗区
+        districtCode: '420503'
+        memo: null
+        address: 湖北省宜昌市伍家岗区伍家乡临江郡
+        maintainState: 0
+        distributionId: '${distributionId}'
+        distributionName: '${distributionName}'
+        typeId: null
+        typeName: ''
+        simNo: null
+        imeiCode: null
+        sync: '1'
+        unitDeptId: ''
+        unitDeptName: null
+        districtName: 湖北省/宜昌市/伍家岗区
+        loopStr: null
+        brandId: '1556945799572570114'
+        brandName: 中移智能监控箱
+        runStatus: 0
+        onlineState: 0
+        updateUserName: ls
+        hardwareLoopParamVOList:
+          - loopName: K1
+            doNum: 1
+            diNum: 1
+            loopType: 1
+            line: A|B|C
+            isNoLoad: 0|0|0
+            leakageScale: 1000
+            currentScale: 1000
+            remark: null
+          - loopName: K2
+            doNum: 2
+            diNum: 2
+            loopType: 1
+            line: A|B|C
+            isNoLoad: 0|0|0
+            leakageScale: 1000
+            currentScale: 1000
+            remark: null
+        runDataList: null
+        iotcardDetail: null
+        imageArr: ''
+        assetDistributionLoopList: [ ]
+    expect:
+      code: 200
+      data:
+        name: '1224#监控箱'
+
+check_hardware_cases:
+  name: "查看回路监控箱成功"
+  request:
+    url: "/api/gxsaas-assets/hardware/listPage"
+    method: "GET"
+    data: ""
+  expect:
+    code: 200
+    data:
+      name: '1224#监控箱'
+
+remove_hardware_cases:
+  - name: "删除回路监控箱成功"
+    request:
+      url: "/api/gxsaas-assets/hardware/remove"
+      method: "POST"
+      param:
+        ids: "${hardware_id}"
+    expect:
+      code: 200
+      data:
+        name: '1224#监控箱'
+
+check_monitor_remove_hardware_cases:
+  - name: "验证删除回路监控箱是否已同步监控"
+    request:
+      url: "/api/gxsaas-monitor/hardware/listPage"
+      method: "GET"
+      param:
+        "keyWord": "${hardware_id}"
+    expect:
+      code: 200
+      data:
+        name: '1224#监控箱'
+
+add_lamppost_cases:
+  - name: "添加灯杆成功"
+    request:
+      url: "/api/gxsaas-assets/lamppost/add"
+      method: "POST"
+      data:
+        isDeliver: 1
+        imageUrl: ''
+        lampNum: 1
+        position: 2
+        lampPostLoopList: [ ]
+        distributionId: '${distributionId}'
+        jkxName: '${jkxName}'
+        streetId: '1902311440011984898'
+        workAreaId: '1815278623369572353'
+        name: 1224灯杆
+        typeId: '1808871335550439425'
+        lon: '111.24911'
+        lat: '30.700159'
+        address: 湖北省宜昌市点军区点军街道江城大道辅路
+        workAreaName: 路灯四队
+        validity: 0
+        postHeight: 0
+        lampRamLength: 0
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆'
+
+update_lamppost_cases:
+  - name: "修改灯杆成功"
+    request:
+      url: "/api/gxsaas-assets/lamppost/update"
+      method: "POST"
+      data:
+        isDeliver: 1
+        imageUrl: ''
+        lampNum: 0
+        position: 2
+        lampPostLoopList: [ ]
+        id: '${id}'
+        name: '${name}'
+        typeId: '1808871335550439425'
+        manufacturer: null
+        code: null
+        deliverDate: null
+        validity: 0
+        postHeight: 0
+        lampRamLength: 0
+        supply: null
+        thickness: 0
+        distributionId: '${distributionId}'
+        distributionLoopId: null
+        workAreaId: '1815278623369572353'
+        workAreaName: 路灯四队
+        streetId: '1902311440011984898'
+        streetName: 一中路
+        memo: null
+        groupId: null
+        district: null
+        districtCode: null
+        unitDeptId: null
+        imageArr: ''
+        postHeightType: ''
+        jkxName: '${jkxName}'
+        lon: '111.24911'
+        lat: '30.700159'
+        address: 湖北省宜昌市点军区点军街道江城大道辅路
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆'
+
+check_lamppost_cases:
+  name: "查看灯杆成功"
+  request:
+    url: "/api/gxsaas-assets/lamppost/listPage"
+    method: "GET"
+    data: ""
+  expect:
+    code: 200
+    data:
+      name: '1224灯杆'
+
+remove_lamppost_cases:
+  - name: "删除灯杆成功"
+    request:
+      url: "/api/gxsaas-assets/lamppost/remove"
+      method: "POST"
+      param:
+        ids: "${lamppost_id}"
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆'
+
+add_lampcontrol_cases:
+  - name: "添加单灯控制器成功"
+    request:
+      url: "/api/gxsaas-assets/lampcontrol/add"
+      method: "POST"
+      data:
+        lat: '30.700159'
+        lon: '111.24911'
+        isDeliver: 1
+        imageUrl: ''
+        lampPostId: '${lampPostId}'
+        lampPostName: '${lampPostName}'
+        streetId: '1902311440011984898'
+        workAreaId: '1815278623369572353'
+        districtCode: '420504'
+        district: 点军区
+        code: dd1224
+        modelId: '1759753207656271874'
+        modelName: GXTY-NJLK-SLC1
+        brandName: 中移单灯
+        manufacturer: 中移物联网
+        spec: '2'
+        address: 湖北省宜昌市点军区点军街道江城大道辅路
+        workAreaName: 路灯四队
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-单灯'
+
+check_monitor_add_lampcontrol_cases:
+  - name: "验证添加单灯控制器是否已同步监控"
+    request:
+      url: "/api/gxsaas-monitor/device/lamp/listPage"
+      method: "GET"
+      param:
+        "keyWord": "${lampcontrol}"
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-单灯'
+        isDeliver: 1
+
+update_lampcontrol_cases:
+  - name: "修改单灯控制器成功"
+    request:
+      url: "/api/gxsaas-assets/lampcontrol/update"
+      method: "POST"
+      data:
+        createUser: '1957244824390721537'
+        createTime: '2026-01-13 15:59:03'
+        updateUser: '1957244824390721537'
+        updateTime: '2026-01-13 15:59:03'
+        isDeleted: 0
+        id: '${id}'
+        name: '${name}'
+        code: '${code}'
+        workAreaId: '1815278623369572353'
+        workAreaName: 路灯四队
+        streetId: '1902311440011984898'
+        streetName: 一中路
+        categoryId: '1453627071947321346'
+        categoryName: null
+        modelId: '1759753207656271874'
+        modelName: GXTY-NJLK-SLC1
+        brand: 中移单灯
+        manufacturer: 中移物联网
+        deliverDate: null
+        validity: null
+        isDeliver: 1
+        imageUrl: ''
+        phase: null
+        tenantId: '633490'
+        lat: '30.700159'
+        lon: '111.24911'
+        province: null
+        city: null
+        district: 点军区
+        districtCode: '420504'
+        memo: null
+        address: 湖北省宜昌市点军区点军街道江城大道辅路
+        maintainState: 0
+        typeId: null
+        typeName: null
+        distributionId: '${distributionId}'
+        distributionName: '${distributionName}'
+        imeiCode: null
+        simNo: null
+        lampPostId: '${lampPostId}'
+        lampPostName: '${lampPostName}'
+        groupId: null
+        sync: null
+        spec: '2'
+        lineNum: 1
+        brandId: '1810489222113173505'
+        brandName: 中移单灯
+        updateUserName: null
+        onlineState: null
+        runStatus: null
+        num: null
+        projectInputDetailId: null
+        status: null
+        lampPostLoopList: [ ]
+        runDataList: null
+        workTime: null
+        iotcardDetail: null
+        imageArr: ''
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-单灯'
+
+check_lampcontrol_cases:
+  name: "查看单灯控制器成功"
+  request:
+    url: "/api/gxsaas-assets/lampcontrol/listPage"
+    method: "GET"
+    data: ""
+  expect:
+    code: 200
+    data:
+      name: '1224灯杆-单灯'
+
+remove_lampcontrol_cases:
+  - name: "删除单灯控制器成功"
+    request:
+      url: "/api/gxsaas-assets/lampcontrol/remove"
+      method: "POST"
+      param:
+        ids: "${lampcontrol_id}"
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-单灯'
+
+check_monitor_remove_lampcontrol_cases:
+  - name: "验证删除单灯控制器是否已同步监控"
+    request:
+      url: "/api/gxsaas-monitor/device/lamp/listPage"
+      method: "GET"
+      param:
+        "keyWord": "${lampcontrol}"
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-单灯'
+
+add_lampbase_without_control_cases:
+  - name: "添加灯具成功-无单灯"
+    request:
+      url: "/api/gxsaas-assets/lampbase/add"
+      method: "POST"
+      data:
+        isDeliver: 1
+        line: A
+        position: 1
+        imageUrl: ''
+        lampPostId: '${lampPostId}'
+        lampPostName: '${lampPostName}'
+        streetId: '1902311440011984898'
+        workAreaId: '1815278623369572353'
+        distributionId: '${distributionId}'
+        name: ''
+        districtCode: '420504'
+        district: 点军区
+        typeId: '1808871335588188162'
+        power: 100
+        lon: '111.24911'
+        lat: '30.700159'
+        address: 湖北省宜昌市点军区点军街道江城大道辅路
+        height: 0
+        validity: 0
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-1灯具'
+
+
+update_lampbase_without_control_cases:
+  - name: "修改灯具成功-无单灯"
+    request:
+      url: "/api/gxsaas-assets/lampbase/update"
+      method: "POST"
+      data:
+        isDeleted: 0
+        id: '${id}'
+        name: '${name}'
+        code: null
+        workAreaId: '1815278623369572353'
+        workAreaName: 路灯四队
+        streetId: '1902311440011984898'
+        streetName: 一中路
+        categoryId: '1536619333391626241'
+        categoryName: null
+        modelId: null
+        modelName: null
+        brand: null
+        manufacturer: null
+        deliverDate: null
+        validity: 0
+        isDeliver: 1
+        imageUrl: ''
+        phase: null
+        tenantId: '633490'
+        lat: '30.700159'
+        lon: '111.24911'
+        province: null
+        city: null
+        district: 点军区
+        districtCode: '420504'
+        memo: null
+        address: 湖北省宜昌市点军区点军街道江城大道辅路
+        maintainState: 0
+        typeId: '1808871335588188162'
+        typeName: LED灯
+        distributionId: '${distributionId}'
+        distributionName: '${distributionName}'
+        lampPostId: '${lampPostId}'
+        lampPostName: '${lampPostName}'
+        distributionLoopId: null
+        distributionLoopName: null
+        line: A
+        position: 1
+        lampPostLoopNum: 1
+        power: 100
+        powerFactor: null
+        direction: null
+        geom: null
+        supply: null
+        powerMode: null
+        height: 0
+        updateUserName: ls
+        lampNodeCode: null
+        lampNodeNum: ''
+        lightStatus: null
+        expireTime: null
+        status: null
+        projectInputDetailId: null
+        spec: null
+        imageArr: ''
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-1灯具'
+
+check_lampbase_without_control_cases:
+    name: "查看无单灯灯具成功"
+    request:
+      url: "/api/gxsaas-assets/lampbase/listPage"
+      method: "GET"
+      data: ""
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-1灯具'
+
+remove_lampbase_without_control_cases:
+  - name: "删除无单灯灯具成功"
+    request:
+      url: "/api/gxsaas-assets/lampbase/remove"
+      method: "POST"
+      param:
+        ids: "${lampbase_id}"
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-1灯具'
+
+add_lampbase_with_control_cases:
+  - name: "添加灯具成功-有单灯"
+    request:
+      url: "/api/gxsaas-assets/lampbase/add"
+      method: "POST"
+      data:
+        isDeliver: 1
+        line: A
+        position: 1
+        imageUrl: ''
+        lampPostId: '${lampPostId}'
+        lampPostName: '${lampPostName}'
+        streetId: '1902311440011984898'
+        workAreaId: '1815278623369572353'
+        distributionId: '${distributionId}'
+        name:
+        districtCode: '420504'
+        district: 点军区
+        typeId: '1808871335588188162'
+        lampNodeCode: '${lampNodeCode}'
+        lampNodeNum: 1
+        power: 100
+        lon: '111.24911'
+        lat: '30.700159'
+        address: 湖北省宜昌市点军区点军街道江城大道辅路
+        height: 0
+        validity: 0
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-2灯具'
+
+update_lampbase_with_control_cases:
+  - name: "修改灯具成功-有单灯"
+    request:
+      url: "/api/gxsaas-assets/lampbase/update"
+      method: "POST"
+      data:
+        isDeleted: 0
+        id: '${id}'
+        name: '${name}'
+        code: null
+        workAreaId: '1815278623369572353'
+        workAreaName: 路灯四队
+        streetId: '1902311440011984898'
+        streetName: 一中路
+        categoryId: '1536619333391626241'
+        categoryName: null
+        modelId: null
+        modelName: null
+        brand: null
+        manufacturer: null
+        deliverDate: null
+        validity: 0
+        isDeliver: 1
+        imageUrl: ''
+        phase: null
+        tenantId: '633490'
+        lat: '30.700159'
+        lon: '111.24911'
+        province: null
+        city: null
+        district: 点军区
+        districtCode: '420504'
+        memo: null
+        address: 湖北省宜昌市点军区点军街道江城大道辅路
+        maintainState: 0
+        typeId: '1808871335588188162'
+        typeName: LED灯
+        distributionId: '${distributionId}'
+        distributionName: '${distributionName}'
+        lampPostId: '${lampPostId}'
+        lampPostName: '${lampPostName}'
+        distributionLoopId: null
+        distributionLoopName: null
+        line: A
+        position: 1
+        lampPostLoopNum: 2
+        power: 100
+        powerFactor: null
+        direction: null
+        geom: null
+        supply: null
+        powerMode: null
+        height: 0
+        updateUserName: ls
+        lampNodeCode: '${lampNodeCode}'
+        lampNodeNum: '1'
+        lightStatus: null
+        expireTime: null
+        status: null
+        projectInputDetailId: null
+        spec: null
+        imageArr: ''
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-2灯具'
+
+check_lampbase_with_control_cases:
+    name: "查看有单灯灯具成功"
+    request:
+      url: "/api/gxsaas-assets/lampbase/listPage"
+      method: "GET"
+      data: ""
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-2灯具'
+
+remove_lampbase_with_control_cases:
+  - name: "删除有单灯灯具成功"
+    request:
+      url: "/api/gxsaas-assets/lampbase/remove"
+      method: "POST"
+      param:
+        ids: "${lampbase_id}"
+    expect:
+      code: 200
+      data:
+        name: '1224灯杆-2灯具'
+
+check_special_hardware_byname_cases:
+  name: "查看调光专用回路监控箱成功"
+  request:
+    url: "/api/gxsaas-assets/hardware/listPage"
+    method: "GET"
+    param:
+      name: "865493088554820"
+  expect:
+    code: 200
+    data:
+      name: ''
+      id: '2048648104343019522'
+
+check_special_hardware_bycode_cases:
+  name: "查看调光专用回路监控箱成功"
+  request:
+    url: "/api/gxsaas-assets/hardware/listPage"
+    method: "GET"
+    param:
+      code: 865493088554820
+  expect:
+    code: 200
+    data:
+      name: ''
+      id: '2048648104343019522'
+
+hardware_fully_open_cases:
+  - name: "全开回路监控箱"
+    request:
+      url: "/api/gxsaas-monitor/hardware/runMap/excuteCommand"
+      method: "POST"
+      data:
+        deviceId: '{$deviceId}'
+        deviceOperFunc: 21
+        commandId: D02017
+        params:
+          controlType: 1
+          commandPfc: ''
+    expect:
+      code: 200
+      data:
+        name: ''
+
+hardware_fully_closed_cases:
+  - name: "全关回路监控箱"
+    request:
+      url: "/api/gxsaas-monitor/hardware/runMap/excuteCommand"
+      method: "POST"
+      data:
+        deviceId: '{$deviceId}'
+        deviceOperFunc: 21
+        commandId: D02017
+        params:
+          controlType: 0
+          commandPfc: ''
+    expect:
+      code: 200
+      data:
+        name: ''
+
+wait_for_hardware_ready_cases:
+  name: "轮询检查天宇监控箱状态"
+  request:
+    url: "/api/gxsaas-monitor/hardware/runMap/getRunData"
+    method: "GET"
+    param:
+      id: "${hardware_id}"
+  expect:
+    code: 200
+    data:
+      open_doState: 1
+      open_diState: 1
+      open_outState: 1
+      close_doState: 0
+      close_diState: 0
+      close_outState: 0
+
+check_special_lamppost_cases:
+  name: "查看测试专用灯杆成功"
+  request:
+    url: "/api/gxsaas-assets/lamppost/listPage"
+    method: "GET"
+    param:
+      name: "测试路1-测试小程序录入"
+  expect:
+    code: 200
+    data:
+      name: ''
+      id: '2063784982608424962'
+
+lampcontrol_open_cases:
+  - name: "单灯控制器单开"
+    request:
+      url: "/api/gxsaas-monitor/lampPost/runMap/lampPost/switch"
+      method: "POST"
+      param:
+        lampPostId: "${lampPostId}"
+        opr: 1
+        commandPfc: ""
+    expect:
+      code: 200
+      data:
+        name: ''
+
+lampcontrol_close_cases:
+  - name: "单灯控制器单关"
+    request:
+      url: "/api/gxsaas-monitor/lampPost/runMap/lampPost/switch"
+      method: "POST"
+      param:
+        lampPostId: "${lampPostId}"
+        opr: 0
+        commandPfc: ""
+    expect:
+      code: 200
+      data:
+        name: ''
+
+check_lampbase_switchstatus_cases:
+  name: "检查灯杆运行数据中开关灯状态"
+  request:
+    url: "/api/gxsaas-datahouse/lamp/lampWorkinfo/listPage"
+    method: "GET"
+    param:
+      current: 1
+      size: 15
+      lampPostId: "${lampPostId}"
+      beginTime: "${beginTime}"
+      endTime: "${endTime}"
+  expect:
+    code: 200
+    data:
+      name: ''
+      open_switchstatus: "1"
+      close_switchstatus: "0"
+
+lampcontrol_dimming_cases:
+  - name: "验证单灯控制器调光功能"
+    request:
+      url: "/api/gxsaas-monitor/lampPost/runMap/lampPost/lampPostBitwise"
+      method: "POST"
+      param:
+        lampPostId: "${lampPostId}"
+        mainDim: 30
+        sideDim: 30
+        commandPfc: ""
+    expect:
+      code: 200
+      data:
+        name: ''
+
+check_lampbase_dimmingLevel_cases:
+  name: "检查灯杆运行数据中调光状态"
+  request:
+    url: "/api/gxsaas-datahouse/lamp/lampWorkinfo/listPage"
+    method: "GET"
+    param:
+      current: 1
+      size: 15
+      lampPostId: "${lampPostId}"
+      beginTime: "${beginTime}"
+      endTime: "${endTime}"
+  expect:
+    code: 200
+    data:
+      name: ''
+      main_dimmingLevel: "30"
+      side_dimmingLevel: "30"
+
